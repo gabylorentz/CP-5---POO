@@ -30,8 +30,8 @@
 
 | # | Sintoma observado (o que fiz/vi) | Causa raiz (arquivo e linha aproximada) | Correção aplicada | Conceito da disciplina |
 |---|---|---|---|---|
-| bug01 | | | | |
-| bug02 | | | | |
+| bug01 |O novo teste de preço esperava 60.0 para banho de porte PEQUENO, mas recebeu 100.0. | Banho.java, método calcularPreco(). Os valores dos portes PEQUENO e GRANDE estavam invertidos.|Banho.java, método calcularPreco(). Os valores dos portes PEQUENO e GRANDE estavam invertidos. |Polimorfismo, sobrescrita de método e aplicação de regra de negócio. |
+| bug02 |O teste deveCriarTosaQuandoTipoForTosa esperava uma instância de Tosa, mas recebeu uma instância de Banho. |AtendimentoFactory.java, método criar(). O caso "TOSA" construía new Banho(...).|A criação foi alterada para new Tosa(...). |Padrão Factory, polimorfismo e instanciação de subclasses. |
 | bug03 | | | | |
 | bug04 | | | | |
 | bug05 | | | | |
@@ -47,7 +47,7 @@
 
 | # | Onde estava | Qual princípio/boas práticas era violado | O que eu mudei |
 |---|---|---|---|
-| clean01 | | | |
+| clean01 |AtendimentoFactory.java, método criar() |Nomes pouco significativos e baixa legibilidade. |Os parâmetros p, t, n, po, tu e d foram renomeados para protocolo, tipo, petNome, petPorte, tutorNome e dataHora.|
 | clean02 | | | |
 | clean03 | | | |
 | clean04 | | | |
@@ -63,7 +63,7 @@
 
 | # | Teste escrito (classe.método) | Regra coberta | Resultado ao escrever (vermelho/verde) |
 |---|---|---|---|
-| teste01 | | | |
+| teste01 |BanhoTest.deveCalcularPrecoCorretoQuandoPorteVariar |O preço do banho deve ser R$ 60 para PEQUENO, R$ 80 para MEDIO e R$ 100 para GRANDE. |Vermelho ao ser escrito. Revelou o bug01, pois PEQUENO retornava 100.0 em vez de 60.0. |
 | teste02 | | | |
 | teste03 | | | |
 | teste04 | | | |
