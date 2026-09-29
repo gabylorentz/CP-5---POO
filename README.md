@@ -9,10 +9,12 @@
 
 | Integrante | RM | Turma |
 |---|---|---|
-| | | |
-| | | |
-| | | |
-| | | |
+| Julia Aparicio | 563623 | 2CCPO |
+| Gabrielly Lorentz | 565806 | 2CCPO |
+| Giovana Praieiro | 565681 | 2CCPO |
+| Heitor Barbosa | 563078 | 2CCPO |
+| Maria Eduarda | 565386 | 2CCPO |
+| Nicole Calasans | 564381 | 2CCPO |
 
 | Campo | |
 |---|---|
@@ -32,7 +34,7 @@
 |---|---|---|---|---|
 | bug01 |O novo teste de preço esperava 60.0 para banho de porte PEQUENO, mas recebeu 100.0. | Banho.java, método calcularPreco(). Os valores dos portes PEQUENO e GRANDE estavam invertidos.|Banho.java, método calcularPreco(). Os valores dos portes PEQUENO e GRANDE estavam invertidos. |Polimorfismo, sobrescrita de método e aplicação de regra de negócio. |
 | bug02 |O teste deveCriarTosaQuandoTipoForTosa esperava uma instância de Tosa, mas recebeu uma instância de Banho. |AtendimentoFactory.java, método criar(). O caso "TOSA" construía new Banho(...).|A criação foi alterada para new Tosa(...). |Padrão Factory, polimorfismo e instanciação de subclasses. |
-| bug03 | | | | |
+| bug03 | Escrevi o teste TosaTest.deveDurar60MinutosQuandoForTosa e ele falhou com expected: <60> but was: <30>. | Tosa.java, método getDuracaoMinutos(String porte), linha ~38. A assinatura tinha um parâmetro que o método da classe pai Atendimento não tem, então era uma sobrecarga, e não uma sobrescrita. O Java executava o método padrão do pai, que retorna 30. | Removi o parâmetro String porte, deixando a assinatura igual à da classe pai, e adicionei @Override. | Polimorfismo, herança, sobrescrita (override) vs sobrecarga (overload). |
 | bug04 | | | | |
 | bug05 | | | | |
 | bug06 | | | | |
@@ -48,7 +50,7 @@
 | # | Onde estava | Qual princípio/boas práticas era violado | O que eu mudei |
 |---|---|---|---|
 | clean01 |AtendimentoFactory.java, método criar() |Nomes pouco significativos e baixa legibilidade. |Os parâmetros p, t, n, po, tu e d foram renomeados para protocolo, tipo, petNome, petPorte, tutorNome e dataHora.|
-| clean02 | | | |
+| clean02 | Tosa.java, métodos calcularPreco(), calcularPontosFidelidade() e getDuracaoMinutos() | Números mágicos: os valores 70.0, 90.0, 120.0, 30 e 60 estavam soltos no código, sem nome que explicasse o significado. | Criei as constantes PRECO_PORTE_PEQUENO, PRECO_PORTE_MEDIO, PRECO_PORTE_GRANDE, PONTOS_FIDELIDADE e DURACAO_MINUTOS e passei a usá-las nos métodos, sem alterar o comportamento. |
 | clean03 | | | |
 | clean04 | | | |
 | clean05 | | | |
@@ -64,7 +66,7 @@
 | # | Teste escrito (classe.método) | Regra coberta | Resultado ao escrever (vermelho/verde) |
 |---|---|---|---|
 | teste01 |BanhoTest.deveCalcularPrecoCorretoQuandoPorteVariar |O preço do banho deve ser R$ 60 para PEQUENO, R$ 80 para MEDIO e R$ 100 para GRANDE. |Vermelho ao ser escrito. Revelou o bug01, pois PEQUENO retornava 100.0 em vez de 60.0. |
-| teste02 | | | |
+| teste02 | TosaTest.deveDurar60MinutosQuandoForTosa | A tosa deve durar 60 minutos. | Vermelho ao ser escrito. Revelou o bug03, pois getDuracaoMinutos() retornava 30 (valor padrão da classe Atendimento) em vez de 60. |
 | teste03 | | | |
 | teste04 | | | |
 | teste05 | | | |
@@ -98,6 +100,8 @@ Um dos bugs compilava sem nenhum erro: um método parecia sobrescrever
 `getDuracaoMinutos`, mas na verdade criava uma assinatura nova. Explique a
 diferença entre override e overload nesse caso e por que a anotação `@Override`
 teria impedido o bug.
+
+Na classe Atendimento, o método getDuracaoMinutos() não recebe parâmetros e retorna 30 como padrão. A Tosa deveria sobrescrevê-lo para retornar 60, mas foi declarada como getDuracaoMinutos(String porte). Como a lista de parâmetros era diferente, o Java entendeu como uma sobrecarga (overload): um método novo, com outra assinatura, que convivia com o herdado. Já a sobrescrita (override) exige a mesma assinatura do método da classe pai, e é ela que ativa o polimorfismo. Por isso, quando o código chamava tosa.getDuracaoMinutos(), o método executado era o da classe pai, e a duração saía 30. O código compilava normalmente porque sobrecarga é válida em Java, e os testes originais não verificavam a duração. Só o teste novo deveDurar60MinutosQuandoForTosa revelou o problema. Se o método tivesse @Override, o compilador daria erro na hora, porque não existe nenhum getDuracaoMinutos(String) na classe pai para ser sobrescrito. A classe Banho já usava @Override e funcionava corretamente, o que mostra a diferença entre as duas.
 
 ### 5. Singleton manual vs bean do Spring (Aula 14)
 O `GeradorProtocolo` é um Singleton escrito à mão e causou um dos bugs.
