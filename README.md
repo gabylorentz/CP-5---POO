@@ -36,8 +36,8 @@
 | bug02 |O teste deveCriarTosaQuandoTipoForTosa esperava uma instância de Tosa, mas recebeu uma instância de Banho. |AtendimentoFactory.java, método criar(). O caso "TOSA" construía new Banho(...).|A criação foi alterada para new Tosa(...). |Padrão Factory, polimorfismo e instanciação de subclasses. |
 | bug03 | Escrevi o teste TosaTest.deveDurar60MinutosQuandoForTosa e ele falhou com expected: <60> but was: <30>. | Tosa.java, método getDuracaoMinutos(String porte), linha ~38. A assinatura tinha um parâmetro que o método da classe pai Atendimento não tem, então era uma sobrecarga, e não uma sobrescrita. O Java executava o método padrão do pai, que retorna 30. | Removi o parâmetro String porte, deixando a assinatura igual à da classe pai, e adicionei @Override. | Polimorfismo, herança, sobrescrita (override) vs sobrecarga (overload). |
 | bug04 | | | | |
-| bug05 | | | | |
-| bug06 | | | | |
+| bug05 |Ao tentar construir um atendimento sem informar o porte do pet, o builder permitia a criação de um objeto incompleto sem lançar exceção. |AtendimentoBuilder.java, método construir(), linha ~35. Faltava a validação do atributo petPorte antes de instanciar o Atendimento. |Adicionada a validação if (this.petPorte == null || this.petPorte.trim().isEmpty()) lançando IllegalArgumentException. |Padrão Builder, encapsulamento e validação de invariantes. |
+| bug06 |Ao instanciar um objeto ConsultaVeterinaria, os métodos para obter o nome e porte do pet retornavam null mesmo passando os dados no construtor. |ConsultaVeterinaria.java, construtor, linha ~12. O construtor da classe filha não repassava os parâmetros de pet para a classe pai Atendimento via super(). |Atualizada a chamada do construtor da superclasse passando petNome e petPorte recebidos na consulta. |Herança, construtores de subclasses e repasse de estado via super().bug07bug08bug09bug10bug11bug12 |
 | bug07 | | | | |
 | bug08 | | | | |
 | bug09 | | | | |
@@ -51,7 +51,7 @@
 |---|---|---|---|
 | clean01 |AtendimentoFactory.java, método criar() |Nomes pouco significativos e baixa legibilidade. |Os parâmetros p, t, n, po, tu e d foram renomeados para protocolo, tipo, petNome, petPorte, tutorNome e dataHora.|
 | clean02 | Tosa.java, métodos calcularPreco(), calcularPontosFidelidade() e getDuracaoMinutos() | Números mágicos: os valores 70.0, 90.0, 120.0, 30 e 60 estavam soltos no código, sem nome que explicasse o significado. | Criei as constantes PRECO_PORTE_PEQUENO, PRECO_PORTE_MEDIO, PRECO_PORTE_GRANDE, PONTOS_FIDELIDADE e DURACAO_MINUTOS e passei a usá-las nos métodos, sem alterar o comportamento. |
-| clean03 | | | |
+| clean03 | ConsultaVeterinaria / AtendimentoBuilder | Padronização dos construtores da ConsultaVeterinaria para reaproveitar o estado da superclasse via `super()`, além de simplificar a lógica de validação no `AtendimentoBuilder`. | Encapsulamento, DRY (Don't Repeat Yourself) e Princípio da Responsabilidade Única (SRP). |
 | clean04 | | | |
 | clean05 | | | |
 | clean06 | | | |
@@ -67,7 +67,7 @@
 |---|---|---|---|
 | teste01 |BanhoTest.deveCalcularPrecoCorretoQuandoPorteVariar |O preço do banho deve ser R$ 60 para PEQUENO, R$ 80 para MEDIO e R$ 100 para GRANDE. |Vermelho ao ser escrito. Revelou o bug01, pois PEQUENO retornava 100.0 em vez de 60.0. |
 | teste02 | TosaTest.deveDurar60MinutosQuandoForTosa | A tosa deve durar 60 minutos. | Vermelho ao ser escrito. Revelou o bug03, pois getDuracaoMinutos() retornava 30 (valor padrão da classe Atendimento) em vez de 60. |
-| teste03 | | | |
+| teste03 || ConsultaVeterinariaTest | Validação do preenchimento completo dos dados do pet e dos campos de diagnóstico e receita. | deveCriarConsultaComDiagnosticoEReceita | Sim|
 | teste04 | | | |
 | teste05 | | | |
 | teste06 | | | |
