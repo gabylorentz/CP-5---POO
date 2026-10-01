@@ -1,12 +1,8 @@
 package br.com.fiap.petfiap.builder;
 
-import br.com.fiap.petfiap.factory.AtendimentoFactory;
 import br.com.fiap.petfiap.model.Atendimento;
-
 import java.time.LocalDateTime;
 
-// Padrao Builder (Aula 14): monta um atendimento complexo passo a passo,
-// sem construtor gigante no controller.
 public class AtendimentoBuilder {
 
     private String tipo;
@@ -36,9 +32,17 @@ public class AtendimentoBuilder {
         return this;
     }
 
-    // A validacao dos campos obrigatorios fica por conta do controller,
-    // que conhece a regra de negocio do PetFiap.
-    public Atendimento construir(int protocolo) {
-        return AtendimentoFactory.criar(protocolo, tipo, petNome, petPorte, tutorNome, dataHora);
+    public Atendimento construir(Integer id) {
+        // Validação do Bug 04: impede atendimento sem nome do pet
+        if (this.petNome == null || this.petNome.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome do pet é obrigatório.");
+        }
+
+        //  CORREÇÃO BUG 05: impede construção de atendimento sem porte
+        if (this.petPorte == null || this.petPorte.trim().isEmpty()) {
+            throw new IllegalArgumentException("Porte do pet é obrigatório.");
+        }
+
+        return new Atendimento(id, tipo, petNome, petPorte, tutorNome, dataHora);
     }
 }
