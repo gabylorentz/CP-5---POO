@@ -1,0 +1,24 @@
+[33md05d97a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m fix: bug08 - impede construcao de atendimento sem nome do pet
+[33m092a743[m Merge pull request #5 from gabylorentz/feature/pessoa-3-builder-consulta
+[33m116f6c3[m[33m ([m[1;31morigin/feature/pessoa-3-builder-consulta[m[33m)[m Merge branch 'main' into feature/pessoa-3-builder-consulta
+[33mb1fb37d[m[33m ([m[1;31morigin/feature/-builder-consulta[m[33m)[m docs: atualiza tabela de entregas da Pessoa 3 no README
+[33mab633f6[m test: teste03 adiciona teste unitario para ConsultaVeterinaria
+[33mfd81e7d[m fix: bug06 corrige preenchimento dos dados do pet na ConsultaVeterinaria
+[33mc435f47[m fix: bug05 impede construcao de atendimento sem porte
+[33m1d47ef4[m Juliia - Builder: bug04
+[33m72d697e[m[33m ([m[1;31morigin/julia-builder[m[33m)[m docs: registra bug04 do builder no README
+[33m200d3ca[m fix: bug04 - corrige atribuicao do nome do pet no builder com this
+[33m7d813ff[m Julia - Tosa: bug03, teste02, clean02
+[33ma488aa6[m[33m ([m[1;31morigin/julia-tosa[m[33m)[m Merge branch 'main' of https://github.com/gabylorentz/CP-5---POO into julia-tosa
+[33m0dac315[m Update README with team members and bug fixes
+[33mb63f536[m docs: registra bug03, clean02 e teste02 da tosa no README
+[33m5387a0f[m refactor: clean02 - substitui valores magicos por constantes na tosa
+[33me74207d[m test: teste02 - cobre duracao de 60 minutos da tosa
+[33mec181b1[m fix: bug03 - corrige sobrescrita de getDuracaoMinutos na tosa
+[33m230ef8e[m Merge pull request #1 from gabylorentz/banho
+[33m107951b[m[33m ([m[1;31morigin/banho[m[33m)[m docs: registra achados de banho e factory no README
+[33m84618ed[m refactor: clean01 - renomeia parametros da factory
+[33m3d39126[m fix: bug02 - corrige criacao de atendimento do tipo tosa
+[33md88a996[m fix: bug01 - corrige preco do banho por porte
+[33m4c51149[m test: teste01 - cobre preco do banho por porte
+[33m5758678[m chore: estado original do projeto recebido
