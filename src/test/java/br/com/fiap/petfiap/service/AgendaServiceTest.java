@@ -23,9 +23,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-// Teste unitario da agenda: NAO sobe o Spring e NAO conecta no Oracle (Aula 15).
-// O @Mock cria um AtendimentoRepository falso; o @InjectMocks injeta esse falso
-// no AgendaService - no teste, quem faz o trabalho do @Autowired e o Mockito.
 @ExtendWith(MockitoExtension.class)
 public class AgendaServiceTest {
 
@@ -109,5 +106,17 @@ public class AgendaServiceTest {
 
         // Act + Assert
         assertThrows(AtendimentoNaoEncontradoException.class, () -> service.buscarPorId(99L));
+    }
+
+    @Test
+    public void deveCancelarAtendimentoAgendado() {
+        Banho agendado = banhoDoRexAmanha10h();
+        when(repository.findById(1L)).thenReturn(Optional.of(agendado));
+        when(repository.save(agendado)).thenReturn(agendado);
+
+        Atendimento cancelado = service.cancelar(1L);
+
+        assertEquals("CANCELADO", cancelado.getStatus());
+        verify(repository).save(agendado);
     }
 }
