@@ -31,12 +31,8 @@ public class AgendaService {
     }
 
     public Atendimento buscarPorId(Long id) {
-        try {
-            return repository.findById(id)
-                    .orElseThrow(() -> new AtendimentoNaoEncontradoException("Atendimento nao encontrado: " + id));
-        } catch (Exception e) {
-            return null;
-        }
+        return repository.findById(id)
+                .orElseThrow(() -> new AtendimentoNaoEncontradoException("Atendimento nao encontrado: " + id));
     }
 
     public Atendimento concluir(Long id) {
