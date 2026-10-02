@@ -34,7 +34,7 @@ public class AtendimentoBuilder {
         return this;
     }
 
-    public Atendimento construir(Integer id) {
+    private void validarCamposObrigatorios() {
 
         if (this.petNome == null || this.petNome.trim().isEmpty()) {
             throw new IllegalArgumentException("Nome do pet é obrigatório.");
@@ -43,6 +43,11 @@ public class AtendimentoBuilder {
         if (this.petPorte == null || this.petPorte.trim().isEmpty()) {
             throw new IllegalArgumentException("Porte do pet é obrigatório.");
         }
+    }
+
+    public Atendimento construir(Integer id) {
+
+        validarCamposObrigatorios();
 
         return AtendimentoFactory.criar(
                 id,

@@ -1,8 +1,9 @@
 package br.com.fiap.petfiap.model;
 
-// Padrao Singleton (Aula 14): uma unica instancia em toda a aplicacao,
-// responsavel por gerar os protocolos sequenciais dos atendimentos.
-// Thread-safe para o uso concorrente do pet shop.
+// Padrao Singleton (Aula 14): garante uma unica instancia na aplicacao.
+// Responsavel pela geracao sequencial dos protocolos dos atendimentos.
+// Mantem a numeracao global dos protocolos do sistema.
+
 public class GeradorProtocolo {
 
     private static GeradorProtocolo instancia;
