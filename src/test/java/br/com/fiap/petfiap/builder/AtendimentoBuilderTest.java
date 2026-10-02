@@ -51,4 +51,17 @@ public class AtendimentoBuilderTest {
                 .comDataHora(data)
                 .construir(9));
     }
+
+    @Test
+    public void deveRecusarMontagemComNomeDoPetVazio() {
+
+        // Act + Assert
+        assertThrows(IllegalArgumentException.class, () -> new AtendimentoBuilder()
+                .comTipo("BANHO")
+                .comPet("", "PEQUENO")
+                .comTutor("Ana")
+                .comDataHora(data)
+                .construir(10));
+    }
 }
+

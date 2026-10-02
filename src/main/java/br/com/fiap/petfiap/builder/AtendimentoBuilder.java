@@ -1,6 +1,8 @@
 package br.com.fiap.petfiap.builder;
 
+import br.com.fiap.petfiap.factory.AtendimentoFactory;
 import br.com.fiap.petfiap.model.Atendimento;
+
 import java.time.LocalDateTime;
 
 public class AtendimentoBuilder {
@@ -33,16 +35,22 @@ public class AtendimentoBuilder {
     }
 
     public Atendimento construir(Integer id) {
-        // Validação do Bug 04: impede atendimento sem nome do pet
+
         if (this.petNome == null || this.petNome.trim().isEmpty()) {
             throw new IllegalArgumentException("Nome do pet é obrigatório.");
         }
 
-        //  CORREÇÃO BUG 05: impede construção de atendimento sem porte
         if (this.petPorte == null || this.petPorte.trim().isEmpty()) {
             throw new IllegalArgumentException("Porte do pet é obrigatório.");
         }
 
-        return new Atendimento(id, tipo, petNome, petPorte, tutorNome, dataHora);
+        return AtendimentoFactory.criar(
+                id,
+                tipo,
+                petNome,
+                petPorte,
+                tutorNome,
+                dataHora
+        );
     }
 }
