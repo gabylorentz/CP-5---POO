@@ -38,8 +38,8 @@
 | bug04 | O teste AtendimentoBuilderTest.deveMontarAtendimentoCompleto falhou com expected: <Rex> but was: <null>. | AtendimentoBuilder.java, método comPet(), linha ~24. A instrução petNome = petNome; atribuía o parâmetro a ele mesmo, porque o parâmetro tinha o mesmo nome do atributo e faltava o this. O atributo da classe ficava null. | Troquei para this.petNome = petNome;, fazendo o valor ser guardado no atributo do Builder. | Encapsulamento, uso do this, sombreamento (shadowing) de atributo por parâmetro, padrão Builder. |
 | bug05 | Ao tentar construir um atendimento sem informar o porte do pet, o builder permitia a criação de um objeto incompleto sem lançar exceção. | AtendimentoBuilder.java, método construir(), linha ~35. Faltava a validação do atributo petPorte antes de instanciar o Atendimento. | Adicionada a validação if (this.petPorte == null \|\| this.petPorte.trim().isEmpty()) lançando IllegalArgumentException. | Padrão Builder, encapsulamento e validação de invariantes. |
 | bug06 | Ao instanciar um objeto ConsultaVeterinaria, os métodos para obter o nome e porte do pet retornavam null mesmo passando os dados no construtor. | ConsultaVeterinaria.java, construtor, linha ~12. O construtor da classe filha não repassava os parâmetros de pet para a classe pai Atendimento via super(). | Atualizada a chamada do construtor da superclasse passando petNome e petPorte recebidos na consulta. | Herança, construtores de subclasses e repasse de estado via super(). |
-| bug07 | | | | |
-| bug08 | | | | |
+| bug07 | O gerador de protocolos podia criar mais de uma instância, quebrando o comportamento esperado do Singleton. | GeradorProtocolo.java, método getInstancia(). A lógica de controle da instância única estava incorreta. | Ajustado o método getInstancia() para garantir a reutilização da mesma instância do GeradorProtocolo. | Padrão Singleton, encapsulamento e gerenciamento de estado global. |
+| bug08 | Era possível criar um atendimento sem informar o nome do pet. | AtendimentoBuilder.java, método construir(), linha ~35. Não existia validação para o atributo petNome antes da criação do atendimento. | Adicionada validação para impedir nome nulo ou vazio, lançando IllegalArgumentException. | Padrão Builder, validação de invariantes e programação defensiva. |
 | bug09 | | | | |
 | bug10 | | | | |
 | bug11 | | | | |
@@ -54,7 +54,7 @@
 | clean01 | AtendimentoFactory.java, método criar() | Nomes pouco significativos e baixa legibilidade. | Os parâmetros p, t, n, po, tu e d foram renomeados para protocolo, tipo, petNome, petPorte, tutorNome e dataHora. |
 | clean02 | Tosa.java, métodos calcularPreco(), calcularPontosFidelidade() e getDuracaoMinutos() | Números mágicos: os valores 70.0, 90.0, 120.0, 30 e 60 estavam soltos no código, sem nome que explicasse o significado. | Criei as constantes PRECO_PORTE_PEQUENO, PRECO_PORTE_MEDIO, PRECO_PORTE_GRANDE, PONTOS_FIDELIDADE e DURACAO_MINUTOS e passei a usá-las nos métodos, sem alterar o comportamento. |
 | clean03 | ConsultaVeterinaria / AtendimentoBuilder | Padronização dos construtores da ConsultaVeterinaria para reaproveitar o estado da superclasse via `super()`, além de simplificar a lógica de validação no `AtendimentoBuilder`. | Encapsulamento, DRY (Don't Repeat Yourself) e Princípio da Responsabilidade Única (SRP). |
-| clean04 | | | |
+| clean04 | AtendimentoBuilder.java, método construir() | Método concentrava a validação e a construção do objeto, reduzindo a legibilidade. | Extraí as validações para o método validarCamposObrigatorios(), deixando o método construir() mais simples e organizado. |
 | clean05 | | | |
 | clean06 | | | |
 
@@ -72,7 +72,7 @@
 | teste01 | BanhoTest.deveCalcularPrecoCorretoQuandoPorteVariar | O preço do banho deve ser R$ 60 para PEQUENO, R$ 80 para MEDIO e R$ 100 para GRANDE. | Vermelho ao ser escrito. Revelou o bug01, pois PEQUENO retornava 100.0 em vez de 60.0. |
 | teste02 | TosaTest.deveDurar60MinutosQuandoForTosa | A tosa deve durar 60 minutos. | Vermelho ao ser escrito. Revelou o bug03, pois getDuracaoMinutos() retornava 30 (valor padrão da classe Atendimento) em vez de 60. |
 | teste03 | ConsultaVeterinariaTest.deveCriarConsultaComDiagnosticoEReceita | Validação do preenchimento completo dos dados do pet e dos campos de diagnóstico e receita na ConsultaVeterinaria. | Verde ao ser escrito. Validou o comportamento correto após as correções. |
-| teste04 | | | |
+| teste04 | AtendimentoBuilderTest.deveRecusarMontagemComNomeDoPetVazio | Um atendimento não pode ser criado com nome de pet vazio. | Verde após as correções. Confirmou o comportamento esperado da validação adicionada no Builder. |
 | teste05 | | | |
 | teste06 | | | |
 

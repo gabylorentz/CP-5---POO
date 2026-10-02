@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 // O @Mock cria um AtendimentoRepository falso; o @InjectMocks injeta esse falso
 // no AgendaService - no teste, quem faz o trabalho do @Autowired e o Mockito.
 @ExtendWith(MockitoExtension.class)
-public class AgendaServiceTest {
+public class AtendimentoBuilderTest {
 
     @Mock
     private AtendimentoRepository repository;
