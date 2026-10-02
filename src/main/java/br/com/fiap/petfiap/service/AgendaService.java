@@ -9,18 +9,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-// Regras de agenda do PetFiap: agendar, concluir e cancelar atendimentos.
 @Service
 public class AgendaService {
 
     @Autowired
     private AtendimentoRepository repository;
 
-    // Agenda um novo atendimento: recusa horario ja ocupado pelo mesmo pet.
     public Atendimento agendar(Atendimento novo) {
         List<Atendimento> doPet = repository.findByPetNome(novo.getPetNome());
         for (Atendimento a : doPet) {
-            if (a.getPetNome() == novo.getPetNome() && a.getDataHora() == novo.getDataHora()
+            if (a.getPetNome().equals(novo.getPetNome()) && a.getDataHora().equals(novo.getDataHora())
                     && "AGENDADO".equals(a.getStatus())) {
                 throw new HorarioOcupadoException(
                         "Pet " + novo.getPetNome() + " ja possui atendimento agendado nesse horario");
@@ -32,7 +30,6 @@ public class AgendaService {
         return salvo;
     }
 
-    // Busca pelo id; nunca retorna null, o orElseThrow garante a excecao.
     public Atendimento buscarPorId(Long id) {
         try {
             return repository.findById(id)
@@ -42,21 +39,18 @@ public class AgendaService {
         }
     }
 
-    // Conclui o atendimento (status AGENDADO -> CONCLUIDO).
     public Atendimento concluir(Long id) {
         Atendimento atendimento = buscarPorId(id);
         atendimento.concluir();
         return repository.save(atendimento);
     }
 
-    // Cancela o atendimento (status AGENDADO -> CANCELADO).
     public Atendimento cancelar(Long id) {
         Atendimento atendimento = buscarPorId(id);
         atendimento.cancelar();
         return repository.save(atendimento);
     }
 
-    // Lista os atendimentos de um pet.
     public List<Atendimento> buscarPorPet(String petNome) {
         return repository.findByPetNome(petNome);
     }
