@@ -19,10 +19,7 @@ public class AgendaService {
     }
 
     public Atendimento agendar(Atendimento novo) {
-    if (novo.getDataHora().isBefore(LocalDateTime.now())) {
-        throw new IllegalArgumentException(
-                "Nao e permitido agendar atendimento no passado");
-    }
+    validarDataHora(novo);
 
     List<Atendimento> doPet = repository.findByPetNome(novo.getPetNome());
 
@@ -34,11 +31,19 @@ public class AgendaService {
                     "Pet " + novo.getPetNome() + " ja possui atendimento agendado nesse horario");
         }
     }
-        Atendimento salvo = repository.save(novo);
-        System.out.println("Recibo: atendimento " + salvo.getProtocolo()
-                + " agendado para " + salvo.getPetNome() + " (tutor " + salvo.getTutorNome() + ")");
-        return salvo;
+
+    Atendimento salvo = repository.save(novo);
+    System.out.println("Recibo: atendimento " + salvo.getProtocolo()
+            + " agendado para " + salvo.getPetNome() + " (tutor " + salvo.getTutorNome() + ")");
+    return salvo;
+}
+
+private void validarDataHora(Atendimento atendimento) {
+    if (atendimento.getDataHora().isBefore(LocalDateTime.now())) {
+        throw new IllegalArgumentException(
+                "Nao e permitido agendar atendimento no passado");
     }
+}
 
     public Atendimento buscarPorId(Long id) {
         return repository.findById(id)
