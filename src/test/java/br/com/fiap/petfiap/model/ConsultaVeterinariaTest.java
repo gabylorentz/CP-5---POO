@@ -29,7 +29,7 @@ public class ConsultaVeterinariaTest {
                 1, "CONSULTA", "Mimi", "PEQUENO", "Carlos", agora, "Otite", "Pingar gotas 2x ao dia"
         );
 
-        assertEquals(1, consulta.getId());
+        assertEquals(1, consulta.getProtocolo());
         assertEquals("CONSULTA", consulta.getTipo());
         assertEquals("Mimi", consulta.getPetNome());
         assertEquals("Otite", consulta.getDiagnostico());
