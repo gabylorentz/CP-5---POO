@@ -6,6 +6,7 @@ import br.com.fiap.petfiap.model.Atendimento;
 import br.com.fiap.petfiap.repository.AtendimentoRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,14 +19,21 @@ public class AgendaService {
     }
 
     public Atendimento agendar(Atendimento novo) {
-        List<Atendimento> doPet = repository.findByPetNome(novo.getPetNome());
-        for (Atendimento a : doPet) {
-            if (a.getPetNome().equals(novo.getPetNome()) && a.getDataHora().equals(novo.getDataHora())
-                    && "AGENDADO".equals(a.getStatus())) {
-                throw new HorarioOcupadoException(
-                        "Pet " + novo.getPetNome() + " ja possui atendimento agendado nesse horario");
-            }
+    if (novo.getDataHora().isBefore(LocalDateTime.now())) {
+        throw new IllegalArgumentException(
+                "Nao e permitido agendar atendimento no passado");
+    }
+
+    List<Atendimento> doPet = repository.findByPetNome(novo.getPetNome());
+
+    for (Atendimento a : doPet) {
+        if (a.getPetNome().equals(novo.getPetNome())
+                && a.getDataHora().equals(novo.getDataHora())
+                && "AGENDADO".equals(a.getStatus())) {
+            throw new HorarioOcupadoException(
+                    "Pet " + novo.getPetNome() + " ja possui atendimento agendado nesse horario");
         }
+    }
         Atendimento salvo = repository.save(novo);
         System.out.println("Recibo: atendimento " + salvo.getProtocolo()
                 + " agendado para " + salvo.getPetNome() + " (tutor " + salvo.getTutorNome() + ")");
