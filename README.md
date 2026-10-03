@@ -55,7 +55,7 @@
 | clean02 | Tosa.java, métodos calcularPreco(), calcularPontosFidelidade() e getDuracaoMinutos() | Números mágicos: os valores 70.0, 90.0, 120.0, 30 e 60 estavam soltos no código, sem nome que explicasse o significado. | Criei as constantes PRECO_PORTE_PEQUENO, PRECO_PORTE_MEDIO, PRECO_PORTE_GRANDE, PONTOS_FIDELIDADE e DURACAO_MINUTOS e passei a usá-las nos métodos, sem alterar o comportamento. |
 | clean03 | ConsultaVeterinaria / AtendimentoBuilder | Padronização dos construtores da ConsultaVeterinaria para reaproveitar o estado da superclasse via `super()`, além de simplificar a lógica de validação no `AtendimentoBuilder`. | Encapsulamento, DRY (Don't Repeat Yourself) e Princípio da Responsabilidade Única (SRP). |
 | clean04 | AtendimentoBuilder.java, método construir() | Método concentrava a validação e a construção do objeto, reduzindo a legibilidade. | Extraí as validações para o método validarCamposObrigatorios(), deixando o método construir() mais simples e organizado. |
-| clean05 | | | |
+| clean05 | AgendaService.java, injeção do AtendimentoRepository | A injeção da dependência diretamente no atributo deixava a dependência menos explícita e dificultava a testabilidade da classe. | Substituída a injeção por atributo com @Autowired pela injeção via construtor, tornando o AtendimentoRepository uma dependência explícita do AgendaService e facilitando os testes unitários com Mockito. |
 | clean06 | | | |
 
 ---
@@ -73,7 +73,7 @@
 | teste02 | TosaTest.deveDurar60MinutosQuandoForTosa | A tosa deve durar 60 minutos. | Vermelho ao ser escrito. Revelou o bug03, pois getDuracaoMinutos() retornava 30 (valor padrão da classe Atendimento) em vez de 60. |
 | teste03 | ConsultaVeterinariaTest.deveCriarConsultaComDiagnosticoEReceita | Validação do preenchimento completo dos dados do pet e dos campos de diagnóstico e receita na ConsultaVeterinaria. | Verde ao ser escrito. Validou o comportamento correto após as correções. |
 | teste04 | AtendimentoBuilderTest.deveRecusarMontagemComNomeDoPetVazio | Um atendimento não pode ser criado com nome de pet vazio. | Verde após as correções. Confirmou o comportamento esperado da validação adicionada no Builder. |
-| teste05 | | | |
+| teste05 | AtendimentoBuilderTest.deveCancelarAtendimentoAgendado | Um atendimento com status AGENDADO pode ser cancelado, passando para CANCELADO, e a alteração deve ser persistida pelo repository.save(). | Verde ao ser escrito. A regra já estava correta e o teste passou a protegê-la contra regressões futuras. |
 | teste06 | | | |
 
 ---
