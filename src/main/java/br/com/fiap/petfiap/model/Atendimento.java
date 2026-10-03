@@ -60,9 +60,15 @@ public abstract class Atendimento {
     }
 
     // Cancela o atendimento
-    public void cancelar() {
-        status = "CANCELADO";
+    // Cancela o atendimento
+public void cancelar() {
+    if (!"AGENDADO".equals(status)) {
+        throw new StatusInvalidoException(
+                "Atendimento nao pode ser cancelado: status " + status);
     }
+
+    status = "CANCELADO";
+}
 
     // Getters e Setters
     public Long getId() { return id; }
